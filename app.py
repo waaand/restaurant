@@ -1,3 +1,7 @@
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 from flask import (
     Flask,
     render_template,
@@ -9,13 +13,16 @@ from flask import (
 import certifi
 from pymongo import MongoClient
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
 
 app = Flask(__name__)
 
-cxn_str = 'mongodb+srv://Waaand:dzakwan122006@cluster0.wffnbky.mongodb.net/?retryWrites=true&w=majority'
-client = MongoClient(cxn_str)
-db = client["dbsparta_project_03"]
-
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
 
 @app.route('/')
 def main():
